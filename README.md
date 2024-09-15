@@ -6,8 +6,8 @@ and bit masking — all of which are central to embedded systems programming.
 
 ## Motivation
 
-The name "Cosmic Monkey" comes from Netflix's "Chaos Monkey", which is a process that randomly terminates virtual machines and containers in the company's production environment to ensure that their software engineers
-implement their services to be resilient to instance failures. In our satellite's operating system ([PVDXosV2](https://github.com/BrownSpaceEngineering/PVDXosV2)), we have implemented a similar task that randomly flips bits to simulate what would happen
+The name *"Cosmic Monkey"* comes from Netflix's [*"Chaos Monkey"*](https://github.com/Netflix/chaosmonkey?tab=readme-ov-file), which is a process that randomly terminates virtual machines and containers in the company's production environment to ensure that their software engineers
+implement services to be resilient to instance failures. In our satellite's operating system ([PVDXosV2](https://github.com/BrownSpaceEngineering/PVDXosV2)), we have implemented a similar task that randomly flips bits to simulate what would happen
 if memory is corrupted by cosmic ray bit-flips. We have no control over when/where this radiation will mutate our memory, so having an angry task that goes around flipping bits is the best way
 to make sure PVDXos can recover if critical memory is corrupted.
 
