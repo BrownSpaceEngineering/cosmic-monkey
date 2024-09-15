@@ -1,7 +1,7 @@
 # Cosmic Monkey
 
 This is a quick onboarding puzzle for new members to the Flight Software (FSW) subgroup of Brown Space Engineering. It's designed to help you get acquainted with C (and all of its weirdness).
-In order to correctly write the `cosmic_monkey` function (and it's accompanying `print_bytes` function for visualizing the result), you'll learn about pointers, bitwise operators, 
+In order to correctly write the `cosmic_monkey` function (and its accompanying `print_bytes` function for visualizing the result), you'll learn about pointers, bitwise operators, 
 and bit masking — all of which are central to embedded systems programming.
 
 ## Motivation
