@@ -8,7 +8,7 @@
  * Note, you're going to need a C compiler to test your code. This is different
  * for each operating system, so feel free to ask a team member for help if
  * you're stuck.
- * -----------------------------------------------------------------------------------------------*/
+ * ---------------------------------------------------------------------------*/
 
 /**
  * int cosmic_monkey(void* data, size_t size)
@@ -37,7 +37,7 @@ uint8_t cosmic_monkey(void *data, size_t size) {
 }
 
 /**
- * void print_bytes(void *data, size_t size);
+ * int32_t print_bytes(void *data, size_t size);
  *
  * \brief Given a pointer to arbitrary data and a size, prints the data as a hex
  * array
