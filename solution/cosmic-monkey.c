@@ -36,7 +36,7 @@
  * NOTE: This function is anally retentive. We expect some level of error
  * checking, but this is a bit excessive for the project
  */
-inline int32_t system_call_perror(int return_val, char call_name[]) {
+inline int32_t system_call_perror(int32_t return_val, char call_name[]) {
     if (return_val < 0) {
         perror(call_name);
     }
@@ -44,7 +44,7 @@ inline int32_t system_call_perror(int return_val, char call_name[]) {
 }
 
 /**
- * int cosmic_monkey(void* data, size_t size)
+ * int32_t cosmic_monkey(void* data, size_t size)
  *
  * \brief Randomly selects a bit within `data` to flip, and flips the bit.
  *
@@ -72,7 +72,13 @@ int32_t cosmic_monkey(void *data, size_t size) {
 
 #ifdef DEBUG
     // Print which byte and bit are being flipped (for debugging purposes)
-    printf("Flipping bit %d of byte %zu\n", random_bit, random_byte);
+    int32_t ret_val = system_call_perror(
+        printf("Flipping bit %d of byte %zu\n", random_bit, random_byte),
+        "printf");
+
+    if (ret_val) {
+        return ret_val;
+    }
 #endif
 
     // Flip the selected bit using XOR
@@ -97,6 +103,8 @@ int32_t cosmic_monkey(void *data, size_t size) {
      * Our mask is thus all 0s, except for a 1 at the appropriate bit. We can
      * create the corrext bit mask by left-bit-shifting 1 by random_bits.
      */
+
+    return 0;
 }
 
 /**
@@ -111,14 +119,18 @@ int32_t cosmic_monkey(void *data, size_t size) {
  *
  * Returns:
  * \return int32_t : a status code, int32_t to comply with status codes returned
- *                  by printf
+ *                   by printf
  */
 
 int32_t print_bytes(void *data, size_t size) {
-    // TODO:
-    //  Implement the print_bytes function to visualize the data in
-    //  hexadecimal format before and after the mutation.
-    // HINT: `man 3 printf` in the terminal
+    // cast data to char/uint8_t array to access individual bytes
+    uint8_t *data_as_byte_array = (uint8_t *)data;
+
+    for (uint8_t i = 0; i < (int8_t)size; i++) {
+        system_call_perror(printf("%02X ", data_as_byte_array[i]), "printf");
+    }
+
+    system_call_perror(printf("\n"), "printf");
 }
 
 /**
@@ -141,17 +153,17 @@ int main(void) {
     unsigned char data[] = {0xFF, 0x00, 0xAA, 0x55};
 
     // Print original data
-    printf("Original data:\n");
+    system_call_perror(printf("Original data:\n"), "printf");
     print_bytes(data, sizeof(data));
 
     // Seed random number generator
-    srand((unsigned int)time(NULL));
+    srand((uint32_t)time(NULL));
 
     // Run the Cosmic Monkey to flip random bits
     cosmic_monkey(data, sizeof(data));
 
     // Print mutated data
-    printf("Mutated data:\n");
+    system_call_perror(printf("Mutated data:\n"), "printf");
     print_bytes(data, sizeof(data));
 
     return 0;
