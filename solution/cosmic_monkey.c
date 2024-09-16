@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,7 +37,7 @@
  * NOTE: This function is anally retentive. We expect some level of error
  * checking, but this is a bit excessive for the project
  */
-inline int32_t system_call_perror(int32_t return_val, char call_name[]) {
+static inline int32_t system_call_perror(int32_t return_val, char call_name[]) {
     if (return_val < 0) {
         perror(call_name);
     }
@@ -73,10 +74,10 @@ int32_t cosmic_monkey(void *data, size_t size) {
 #ifdef DEBUG
     // Print which byte and bit are being flipped (for debugging purposes)
     int32_t ret_val = system_call_perror(
-        printf("Flipping bit %d of byte %zu\n", random_bit, random_byte),
+        printf("Flipping bit %d of byte %d \n", random_bit, random_byte),
         "printf");
 
-    if (ret_val) {
+    if (ret_val < 0) {
         return ret_val;
     }
 #endif
@@ -125,12 +126,19 @@ int32_t cosmic_monkey(void *data, size_t size) {
 int32_t print_bytes(void *data, size_t size) {
     // cast data to char/uint8_t array to access individual bytes
     uint8_t *data_as_byte_array = (uint8_t *)data;
+    int32_t ret_val;
 
     for (uint8_t i = 0; i < (int8_t)size; i++) {
-        system_call_perror(printf("%02X ", data_as_byte_array[i]), "printf");
+        ret_val = system_call_perror(printf("%02X ", data_as_byte_array[i]),
+                                     "printf");
+        if (ret_val < 0) {
+            return ret_val;
+        }
     }
 
-    system_call_perror(printf("\n"), "printf");
+    ret_val = system_call_perror(printf("\n"), "printf");
+
+    return ret_val;
 }
 
 /**
