@@ -10,7 +10,11 @@
  * Note, you're going to need a C compiler to test your code. This is different
  * for each operating system, so feel free to ask a team member for help if
  * you're stuck.
- * ---------------------------------------------------------------------------*/
+ * ---------------------------------------------------------------------------
+ * DISCLAIMER: This code is very UNIX/Linux specific. It abides by the
+ * coding/safety standards expected on PVDXos, but it NOT a 1-to-1
+ * correspondance with the code pushed to the satellite.
+ */
 
 /**
  * int32_t system_call_perror(int return_val, char call_name[])
@@ -35,7 +39,7 @@
  * \return int_32_t : the return value of the input system function call
  *
  * NOTE: This function is anally retentive. We expect some level of error
- * checking, but this is a bit excessive for the project
+ * checking, but this is a bit excessive for the purposes of the task.
  */
 static inline int32_t system_call_perror(int32_t return_val, char call_name[]) {
     if (return_val < 0) {
@@ -60,7 +64,7 @@ static inline int32_t system_call_perror(int32_t return_val, char call_name[]) {
  * \param size : The size of the data block in bytes.
  *
  * Returns:
- * \return int8_t : 0 upon success
+ * \return int32_t : 0 upon success
  */
 
 int32_t cosmic_monkey(void *data, size_t size) {
@@ -73,12 +77,12 @@ int32_t cosmic_monkey(void *data, size_t size) {
 
 #ifdef DEBUG
     // Print which byte and bit are being flipped (for debugging purposes)
-    int32_t ret_val = system_call_perror(
+    int32_t error_code = system_call_perror(
         printf("Flipping bit %d of byte %d \n", random_bit, random_byte),
         "printf");
 
-    if (ret_val < 0) {
-        return ret_val;
+    if (error_code < 0) {
+        exit(error_code);
     }
 #endif
 
@@ -126,19 +130,23 @@ int32_t cosmic_monkey(void *data, size_t size) {
 int32_t print_bytes(void *data, size_t size) {
     // cast data to char/uint8_t array to access individual bytes
     uint8_t *data_as_byte_array = (uint8_t *)data;
-    int32_t ret_val;
+    int32_t error_code;
 
     for (uint8_t i = 0; i < (int8_t)size; i++) {
-        ret_val = system_call_perror(printf("%02X ", data_as_byte_array[i]),
-                                     "printf");
-        if (ret_val < 0) {
-            return ret_val;
+        error_code = system_call_perror(printf("%02X ", data_as_byte_array[i]),
+                                        "printf");
+        if (error_code < 0) {
+            exit(error_code);
         }
     }
 
-    ret_val = system_call_perror(printf("\n"), "printf");
+    error_code = system_call_perror(printf("\n"), "printf");
 
-    return ret_val;
+    if (error_code < 0) {
+        exit(error_code);
+    }
+
+    return 0;
 }
 
 /**
